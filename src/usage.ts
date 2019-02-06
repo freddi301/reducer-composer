@@ -23,7 +23,7 @@ const userInitialState: User = {
   name: "",
   birth: new Date()
 };
-const userReducer = createReducer(userInitialState, {
+const userReducer = createReducer<User>()({
   USER_CHANGE_NAME(user, { name }: { name: string }) {
     return { ...user, name };
   },
@@ -42,7 +42,7 @@ userReducer(userInitialState, {
 
 type Click = number;
 const clickInitialState: Click = 0;
-const clickReducer = createReducer(clickInitialState, {
+const clickReducer = createReducer<Click>()({
   CLICK(clicks) {
     return clicks + 1;
   },
@@ -100,7 +100,7 @@ usersReducer(
 const usersInitialState: Record<string, User> = {};
 const usersReducerWithAdd = reducerSequence([
   usersReducer,
-  createReducer(usersInitialState, {
+  createReducer<Record<string, User>>()({
     USER_ADD(state, user: User) {
       return { ...state, [user.id]: user };
     }
@@ -155,7 +155,7 @@ interface Car {
   km: number;
 }
 const carCrud = crud("id")<Car>();
-const carReducer = createReducer({} as Record<string, Car>, {
+const carReducer = createReducer<Record<string, Car>>()({
   CAR_ADD: carCrud.create,
   CAR_UPDATE: carCrud.update,
   CAR_DESTROY: carCrud.discard
@@ -167,14 +167,14 @@ interface Rent {
   car: string;
   date: Date;
 }
-const rentReducer = createReducer({} as Rent, {
+const rentReducer = createReducer<Rent>()({
   RENT_CHANGE_USER(state, { user }: { user: string }) {
     return { ...state, user };
   }
 });
 const rentKeyedReducer = keyedReducer("id", rentReducer);
 const rentsCrud = crud("id")<Rent>();
-const rentsCrudReducer = createReducer({} as Record<string, Rent>, {
+const rentsCrudReducer = createReducer<Record<string, Rent>>()({
   RENT: rentsCrud.create,
   RENT_CANCEL: rentsCrud.delete
 });

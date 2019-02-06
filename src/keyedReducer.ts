@@ -22,3 +22,19 @@ export function keyedReducer<
     };
   };
 }
+
+export function keyedByReducer<
+  State,
+  Action extends { type: string; payload: Record<string, any> }
+>(
+  keySelector: (action: Action) => string,
+  reducer: Reducer<State, Action>
+): Reducer<Record<string, State>, Action> {
+  return (state, action) => {
+    const key = keySelector(action);
+    return {
+      ...state,
+      [key]: reducer(state[key as string], action)
+    };
+  };
+}

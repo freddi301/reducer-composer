@@ -1,16 +1,25 @@
 import { Reducer, Values } from "./UtilityTypes";
+import { createReducer } from "./createReducer";
 
 export function combineReducers<
-  Reducers extends {
-    [K in keyof Reducers]: Reducer<
-      Parameters<Reducers[K]>[0],
-      Parameters<Reducers[K]>[1]
-    >
-  }
+  Reducers extends Record<string, Reducer<any, any>>
 >(
-  reducers: Reducers
+  reducers: Reducers &
+    {
+      [K in keyof Reducers]: Reducer<
+        Parameters<Reducers[K]>[0],
+        Values<
+          {
+            [I in keyof Reducers]: Extract<
+              Parameters<Reducers[I]>[1],
+              { type: Parameters<Reducers[K]>[1]["type"]; payload?: any }
+            >
+          }
+        >
+      >
+    }
 ): Reducer<
-  { [K in keyof Reducers]: Exclude<Parameters<Reducers[K]>[0], undefined> },
+  { [K in keyof Reducers]: Parameters<Reducers[K]>[0] },
   Values<{ [K in keyof Reducers]: Parameters<Reducers[K]>[1] }>
 > {
   return (state, action) => {

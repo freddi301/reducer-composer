@@ -7,7 +7,11 @@ export function batchReducer<
 >(
   actionType: ActionType,
   reducer: Reducer<State, Action>
-): Reducer<State, { type: ActionType; payload: Array<Action> } | Action> {
+): Reducer<
+  State,
+  | { type: ActionType; payload: Array<Action> }
+  | Exclude<Action, { type: ActionType }>
+> {
   return (state, action) =>
     action.type === actionType
       ? action.payload.reduce(reducer, state)

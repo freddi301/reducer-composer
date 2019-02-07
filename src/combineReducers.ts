@@ -1,5 +1,4 @@
 import { Reducer, Values } from "./utility";
-import { createReducer } from "./createReducer";
 
 export function combineReducers<
   Reducers extends Record<string, Reducer<any, any>>

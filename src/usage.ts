@@ -4,7 +4,7 @@ import {
   StateOfReducer,
   ActionOfReducer,
   keyedReducer,
-  reducerSequence,
+  createReducerSequence,
   createReducerOnAction,
   crud,
   Reducer,
@@ -99,14 +99,14 @@ usersReducer(
 // reducerSequence
 
 const usersInitialState: Record<string, User> = {};
-const usersReducerWithAdd = reducerSequence([
+const usersReducerWithAdd = createReducerSequence(
   usersReducer,
   createReducer<Record<string, User>>()({
     USER_ADD(state, user: User) {
       return { ...state, [user.id]: user };
     }
   })
-]);
+);
 usersReducerWithAdd(
   {},
   { type: "USER_CHANGE_NAME", payload: { id: "42", name: "John Doe" } }
@@ -181,7 +181,7 @@ const rentsCrudReducer = createReducer<Record<string, Rent>>()({
   RENT: rentsCrud.create,
   RENT_CANCEL: rentsCrud.delete
 });
-const rentsReducer = reducerSequence([rentKeyedReducer, rentsCrudReducer]);
+const rentsReducer = createReducerSequence(rentKeyedReducer, rentsCrudReducer);
 
 const carRentCompanyReducer = combineReducers({
   users: usersReducerWithAdd,
@@ -267,11 +267,11 @@ const precondition = createReducerOnAction<
   USER_CHANGE_NAME: ignore
 });
 
-const safeCarRentCompanyReducer = reducerSequence([
+const safeCarRentCompanyReducer = createReducerSequence(
   precondition,
   carRentCompanyReducer,
   postCondition
-]);
+);
 
 const transactionalSafeCarRentCompanyReducer = batchReducer(
   "CAR_TRANSACTION",

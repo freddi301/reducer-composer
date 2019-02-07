@@ -1,5 +1,4 @@
 export type Values<O> = O[keyof O];
-export type ArrayValues<A> = A extends Array<infer Value> ? Value : unknown;
 
 export type Reducer<State, Action extends { type: string; payload?: any }> = (
   state: State,
@@ -7,8 +6,8 @@ export type Reducer<State, Action extends { type: string; payload?: any }> = (
 ) => State;
 
 export type ActionOfReducer<R extends Reducer<any, any>> = Parameters<R>[1];
-export type StateOfReducer<R extends Reducer<any, any>> = Parameters<R>[0];
+export type StateOfReducer<R extends Reducer<any, any>> = ReturnType<R>;
 
-export function ignore<State>(state: State, action?: any) {
+export function ignore<State>(state: State) {
   return state;
 }

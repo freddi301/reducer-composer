@@ -3,7 +3,7 @@ export { combineReducers } from "./combineReducers";
 export { keyedReducer, keyedByReducer } from "./keyedReducer";
 export { batchReducer } from "./batchReducer";
 export { createReducerOnAction } from "./createReducerOnAction";
-export { reducerSequence } from "./reducerSequence";
+export { createReducerSequence } from "./createReducerSequence";
 export { crud } from "./crud";
 
 export * from "./utility";

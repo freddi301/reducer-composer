@@ -11,3 +11,6 @@ export type StateOfReducer<R extends Reducer<any, any>> = ReturnType<R>;
 export function ignore<State>(state: State) {
   return state;
 }
+export function get<Attribute extends string>(attribute: Attribute) {
+  return <Value>(object: { [K in Attribute]: Value }) => object[attribute];
+}

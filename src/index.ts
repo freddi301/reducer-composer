@@ -1,9 +1,9 @@
 export { createReducer } from "./createReducer";
-export { combineReducers } from "./combineReducers";
-export { keyedReducer, keyedByReducer } from "./keyedReducer";
-export { batchReducer } from "./batchReducer";
+export { createCombinedReducer } from "./createCombinedReducer";
+export { createKeyedReducer } from "./createKeyedReducer";
+export { createKeyedByReducer } from "./createKeyedByReducer";
+export { createBatchReducer } from "./createBatchReducer";
 export { createReducerOnAction } from "./createReducerOnAction";
 export { createReducerSequence } from "./createReducerSequence";
-export { crud } from "./crud";
-
+export { createReducerCrudHandlers } from "./createReducerCrudHandlers";
 export * from "./utility";

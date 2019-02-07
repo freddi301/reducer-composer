@@ -1,6 +1,6 @@
 import { Reducer } from "./utility";
 
-export function batchReducer<
+export function createBatchReducer<
   ActionType extends string,
   State,
   Action extends { type: string; payload?: any }

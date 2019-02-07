@@ -1,6 +1,6 @@
 import { Reducer, Values } from "./utility";
 
-export function combineReducers<
+export function createCombinedReducer<
   Reducers extends Record<string, Reducer<any, any>>
 >(
   reducers: Reducers &

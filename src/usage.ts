@@ -1,16 +1,16 @@
 import {
   createReducer,
-  combineReducers,
+  createCombinedReducer,
   StateOfReducer,
   ActionOfReducer,
-  keyedReducer,
+  createKeyedReducer,
   createReducerSequence,
   createReducerOnAction,
-  crud,
   Reducer,
-  batchReducer,
+  createBatchReducer,
   ignore
 } from "./";
+import { createReducerCrudHandlers } from "./createReducerCrudHandlers";
 
 // createReducer
 
@@ -54,9 +54,9 @@ const clickReducer = createReducer<Click>()({
 clickReducer(clickInitialState, { type: "CLICK" });
 clickReducer(clickInitialState, { type: "CLICK_SET", payload: { clicks: 42 } });
 
-// combineReducers
+// createCombinedReducer
 
-const userClickReducer = combineReducers({
+const userClickReducer = createCombinedReducer({
   user: userReducer,
   click: clickReducer
 });
@@ -74,11 +74,13 @@ userClickReducer(userClickInitialState, {
   type: "USER_CHANGE_NAME",
   payload: { name: "John" }
 });
-const nestedUserClickReducer = combineReducers({ nested: userClickReducer });
+const nestedUserClickReducer = createCombinedReducer({
+  nested: userClickReducer
+});
 
-// batchReducer
+// createBatchReducer
 
-const userClickBatchReducer = batchReducer("CLICKS", userClickReducer);
+const userClickBatchReducer = createBatchReducer("CLICKS", userClickReducer);
 userClickBatchReducer(userClickInitialState, { type: "CLICK" });
 userClickBatchReducer(userClickInitialState, {
   type: "CLICKS",
@@ -90,13 +92,13 @@ userClickBatchReducer(userClickInitialState, {
 
 // keyedReducer
 
-const usersReducer = keyedReducer("id", userReducer);
+const usersReducer = createKeyedReducer("id", userReducer);
 usersReducer(
   {},
   { type: "USER_CHANGE_NAME", payload: { id: "42", name: "John Doe" } }
 );
 
-// reducerSequence
+// createReducerSequence
 
 const usersInitialState: Record<string, User> = {};
 const usersReducerWithAdd = createReducerSequence(
@@ -116,7 +118,10 @@ usersReducerWithAdd(
   { type: "USER_ADD", payload: { id: "42", name: "John", birth: new Date() } }
 );
 
-const multitenantUsersReducer = keyedReducer("company", usersReducerWithAdd);
+const multitenantUsersReducer = createKeyedReducer(
+  "company",
+  usersReducerWithAdd
+);
 multitenantUsersReducer(
   {},
   {
@@ -150,14 +155,17 @@ usersActionCounterReducer(0, {
   payload: { id: "42", name: "John", birth: new Date() }
 });
 
-// crud
+// createReducerCrudHandlers
 
 interface Car {
   id: string;
   name: string;
   km: number;
 }
-const carCrud = crud("id")<Car>();
+const carCrud = createReducerCrudHandlers(
+  (payload: Car) => [payload.id, payload],
+  (payload: { id: string }) => payload.id
+);
 const carReducer = createReducer<Record<string, Car>>()({
   CAR_ADD: carCrud.create,
   CAR_UPDATE: carCrud.update,
@@ -175,15 +183,18 @@ const rentReducer = createReducer<Rent>()({
     return { ...state, user };
   }
 });
-const rentKeyedReducer = keyedReducer("id", rentReducer);
-const rentsCrud = crud("id")<Rent>();
+const rentKeyedReducer = createKeyedReducer("id", rentReducer);
+const rentsCrud = createReducerCrudHandlers(
+  (rent: Rent) => [rent.id, rent],
+  ({ id }: { id: string }) => id
+);
 const rentsCrudReducer = createReducer<Record<string, Rent>>()({
   RENT: rentsCrud.create,
   RENT_CANCEL: rentsCrud.delete
 });
 const rentsReducer = createReducerSequence(rentKeyedReducer, rentsCrudReducer);
 
-const carRentCompanyReducer = combineReducers({
+const carRentCompanyReducer = createCombinedReducer({
   users: usersReducerWithAdd,
   cars: carReducer,
   rents: rentsReducer
@@ -273,7 +284,7 @@ const safeCarRentCompanyReducer = createReducerSequence(
   postCondition
 );
 
-const transactionalSafeCarRentCompanyReducer = batchReducer(
+const transactionalSafeCarRentCompanyReducer = createBatchReducer(
   "CAR_TRANSACTION",
   safeCarRentCompanyReducer
 );

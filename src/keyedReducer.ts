@@ -1,4 +1,4 @@
-import { Reducer } from "./UtilityTypes";
+import { Reducer } from "./utility";
 
 export function keyedReducer<
   KeyAttribute extends string,

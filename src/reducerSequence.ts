@@ -1,4 +1,4 @@
-import { Reducer, ActionOfReducer, ArrayValues } from "./UtilityTypes";
+import { Reducer, ActionOfReducer, ArrayValues } from "./utility";
 
 export function reducerSequence<
   State,

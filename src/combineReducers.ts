@@ -1,4 +1,4 @@
-import { Reducer, Values } from "./UtilityTypes";
+import { Reducer, Values } from "./utility";
 import { createReducer } from "./createReducer";
 
 export function combineReducers<

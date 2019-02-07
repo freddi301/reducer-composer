@@ -1,4 +1,4 @@
-import { Values } from "./UtilityTypes";
+import { Values } from "./utility";
 
 export function createReducer<State>() {
   return <

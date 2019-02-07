@@ -8,7 +8,8 @@ import {
   createReducerOnAction,
   crud,
   Reducer,
-  batchReducer
+  batchReducer,
+  ignore
 } from "./";
 
 // createReducer
@@ -134,14 +135,16 @@ multitenantUsersReducer(
 // createReducerOnAction
 
 type UsersWithAddAction = ActionOfReducer<typeof usersReducerWithAdd>;
-const usersActionCounterReducer = createReducerOnAction<UsersWithAddAction>()(
-  0,
-  {
-    USER_ADD(count) {
-      return count + 1;
-    }
-  }
-);
+const usersActionCounterReducer = createReducerOnAction<
+  number,
+  UsersWithAddAction
+>()({
+  USER_ADD(count) {
+    return count + 1;
+  },
+  USER_CHANGE_BIRTH: ignore,
+  USER_CHANGE_NAME: ignore
+});
 usersActionCounterReducer(0, {
   type: "USER_ADD",
   payload: { id: "42", name: "John", birth: new Date() }
@@ -236,25 +239,33 @@ const postCondition: Reducer<CarRentCompanyState, CarRentCompanyAction> = (
 function get<Key extends string>(key: Key) {
   return <Value, O extends { [K in Key]: Value }>(o: O) => o[key];
 }
-const precondition = createReducerOnAction<CarRentCompanyAction>()(
-  carRentCompanyInitialState,
-  {
-    CAR_DESTROY(state, { id }) {
-      const { rents } = state;
-      const referencedRents = Object.values(rents)
-        .filter(({ car }) => car === id)
-        .map(get("id"));
-      if (referencedRents.length) {
-        throw new Error(
-          `Cannot destroy Car: ${id} because it is referenced by rents: ${referencedRents.join(
-            ", "
-          )}`
-        );
-      }
-      return state;
+const precondition = createReducerOnAction<
+  CarRentCompanyState,
+  CarRentCompanyAction
+>()({
+  CAR_DESTROY(state, { id }) {
+    const { rents } = state;
+    const referencedRents = Object.values(rents)
+      .filter(({ car }) => car === id)
+      .map(get("id"));
+    if (referencedRents.length) {
+      throw new Error(
+        `Cannot destroy Car: ${id} because it is referenced by rents: ${referencedRents.join(
+          ", "
+        )}`
+      );
     }
-  }
-);
+    return state;
+  },
+  CAR_ADD: ignore,
+  CAR_UPDATE: ignore,
+  RENT: ignore,
+  RENT_CANCEL: ignore,
+  RENT_CHANGE_USER: ignore,
+  USER_ADD: ignore,
+  USER_CHANGE_BIRTH: ignore,
+  USER_CHANGE_NAME: ignore
+});
 
 const safeCarRentCompanyReducer = reducerSequence([
   precondition,

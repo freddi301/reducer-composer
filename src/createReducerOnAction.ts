@@ -1,23 +1,21 @@
 import { createReducer } from "./createReducer";
 
 export function createReducerOnAction<
+  State,
   Action extends { type: string; payload?: any }
 >() {
   return <
-    State,
     Handlers extends {
       [Type in Action["type"]]: (
         state: State,
         payload: Extract<Action, { type: Type }>["payload"]
       ) => State
-    },
-    Effective extends Partial<Handlers>
+    }
   >(
-    initial: State,
-    handlers: Effective
+    handlers: Handlers
   ) =>
-    createReducer(initial, handlers as {
-      [Type in keyof Effective]: (
+    createReducer<State>()(handlers as {
+      [Type in keyof Handlers]: (
         state: State,
         payload: Extract<Action, { type: Type }>["payload"]
       ) => State

@@ -6,4 +6,4 @@ export { createReducerOnAction } from "./createReducerOnAction";
 export { reducerSequence } from "./reducerSequence";
 export { crud } from "./crud";
 
-export * from "./UtilityTypes";
+export * from "./utility";

@@ -9,7 +9,8 @@ import {
   Reducer,
   createBatchReducer,
   ignore,
-  createReducerCrudHandlers
+  createReducerCrudHandlers,
+  createBatchHandler
 } from "reducer-composer";
 
 // createReducer
@@ -169,7 +170,8 @@ const carCrud = createReducerCrudHandlers(
 const carReducer = createReducer<Record<string, Car>>()({
   CAR_ADD: carCrud.create,
   CAR_UPDATE: carCrud.update,
-  CAR_DESTROY: carCrud.discard
+  CAR_DESTROY: carCrud.discard,
+  CAR_ADD_MANY: createBatchHandler(carCrud.create)
 });
 
 interface Rent {
@@ -275,7 +277,8 @@ const precondition = createReducerOnAction<
   RENT_CHANGE_USER: ignore,
   USER_ADD: ignore,
   USER_CHANGE_BIRTH: ignore,
-  USER_CHANGE_NAME: ignore
+  USER_CHANGE_NAME: ignore,
+  CAR_ADD_MANY: ignore
 });
 
 const safeCarRentCompanyReducer = createReducerSequence(

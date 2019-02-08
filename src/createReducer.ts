@@ -18,7 +18,7 @@ export function createReducer<State>() {
         }
       >
     ) =>
-      action.type in handlers
+      Object.prototype.hasOwnProperty.call(handlers, action.type)
         ? handlers[action.type](state, action.payload)
         : state;
   };

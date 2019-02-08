@@ -16,19 +16,19 @@ export function createReducerCrudHandlers<Entity, EntityPayload, KeyPayload>(
     f(record, keySelector(payload));
   return {
     create: withEntity((state, key, entity) => {
-      if (key in state) {
+      if (Object.prototype.hasOwnProperty.call(state, key)) {
         throw new Error();
       }
       return { ...state, [key]: entity };
     }),
     update: withEntity((state, key, entity) => {
-      if (key in state) {
+      if (Object.prototype.hasOwnProperty.call(state, key)) {
         return { ...state, [key]: entity };
       }
       throw new Error();
     }),
     delete: withKey((state, key) => {
-      if (key in state) {
+      if (Object.prototype.hasOwnProperty.call(state, key)) {
         const { [key]: removed, ...rest } = state;
         return rest as Record<string, Entity>;
       }

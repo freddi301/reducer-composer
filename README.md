@@ -1,8 +1,10 @@
 # reducer-composer
 
-compose your reducers effortlessly, with intellisense and strict type-checking
+Compose your reducers **effortlessly**, with **intellisense** and **strict type-checking**.
 
-## [Usage](src/usage.ts)
+## Usage
+
+[![Edit reducer-composer](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/52zq6r02ln?hidenavigation=1&view=editor)
 
 ```typescript
 import {
@@ -85,3 +87,7 @@ const car = createReducer<Record<string, Car>>()({
   CAR_DESTROY: carCrud.discard
 });
 ```
+
+[more usage](src/usage.ts)
+
+## License MIT

@@ -1,10 +1,3 @@
-# reducer-composer
-
-compose your reducers effortlessly, with intellisense and strict type-checking
-
-## [Usage](src/usage.ts)
-
-```typescript
 import {
   createReducer,
   createCombinedReducer,
@@ -84,4 +77,3 @@ const car = createReducer<Record<string, Car>>()({
   CAR_UPDATE: carCrud.update,
   CAR_DESTROY: carCrud.discard
 });
-```

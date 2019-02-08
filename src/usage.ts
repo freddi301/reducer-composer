@@ -8,9 +8,9 @@ import {
   createReducerOnAction,
   Reducer,
   createBatchReducer,
-  ignore
-} from "./";
-import { createReducerCrudHandlers } from "./createReducerCrudHandlers";
+  ignore,
+  createReducerCrudHandlers
+} from "reducer-composer";
 
 // createReducer
 

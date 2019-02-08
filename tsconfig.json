@@ -2,6 +2,7 @@
   "compilerOptions": {
     "target": "es5",
     "module": "commonjs",
+    "baseUrl": ".",
     "rootDir": "src",
     "outDir": "dist",
     "declaration": true,
@@ -16,7 +17,8 @@
     "noImplicitReturns": true,
     "noUnusedParameters": true,
     "noImplicitThis": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    "paths": { "reducer-composer": ["src/index"] }
   },
   "exclude": ["node_modules", "dist", "__tests__"]
 }

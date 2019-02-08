@@ -184,9 +184,9 @@ const rentReducer = createReducer<Rent>()({
   }
 });
 const rentKeyedReducer = createKeyedReducer("id", rentReducer);
-const rentsCrud = createReducerCrudHandlers(
-  (rent: Rent) => [rent.id, rent],
-  ({ id }: { id: string }) => id
+const rentsCrud = createReducerCrudHandlers<Rent, Rent, { id: string }>(
+  rent => [rent.id, rent],
+  ({ id }) => id
 );
 const rentsCrudReducer = createReducer<Record<string, Rent>>()({
   RENT: rentsCrud.create,

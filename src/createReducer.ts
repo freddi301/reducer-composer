@@ -1,13 +1,16 @@
-import { Values } from "./utility";
+import { Values, DeepReadonly } from "./utility";
 
 export function createReducer<State>() {
   return <
-    Handlers extends Record<string, (state: State, payload: any) => State>
+    Handlers extends Record<
+      string,
+      (state: DeepReadonly<State>, payload: any) => DeepReadonly<State>
+    >
   >(
     handlers: Handlers
   ) => {
     return (
-      state: State,
+      state: DeepReadonly<State>,
       action: Values<
         {
           [Type in keyof Handlers]: Parameters<

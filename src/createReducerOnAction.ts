@@ -1,4 +1,5 @@
 import { createReducer } from "./createReducer";
+import { DeepReadonly } from "./utility";
 
 export function createReducerOnAction<
   State,
@@ -7,17 +8,17 @@ export function createReducerOnAction<
   return <
     Handlers extends {
       [Type in Action["type"]]: (
-        state: State,
+        state: DeepReadonly<State>,
         payload: Extract<Action, { type: Type }>["payload"]
-      ) => State
+      ) => DeepReadonly<State>
     }
   >(
     handlers: Handlers
   ) =>
     createReducer<State>()(handlers as {
       [Type in keyof Handlers]: (
-        state: State,
+        state: DeepReadonly<State>,
         payload: Extract<Action, { type: Type }>["payload"]
-      ) => State
+      ) => DeepReadonly<State>
     });
 }

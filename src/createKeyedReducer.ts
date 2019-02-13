@@ -1,5 +1,8 @@
 import { Reducer } from "./utility";
 
+/**
+ * @todo filter unknown actions, cannot be called with unknown actions (cannot be used as is in createCombinedReducer)
+ */
 export function createKeyedReducer<
   KeyAttribute extends string,
   State,
@@ -11,12 +14,11 @@ export function createKeyedReducer<
   Record<string, State>,
   Action & { payload: { [K in KeyAttribute]: string | number } }
 > {
-  return (state, action) => {
+  return (state = {}, action) => {
     const {
       type,
       payload: { [keyAttribute]: key, ...payload }
     } = action;
-    // TODO: guard against unknown actions
     return {
       ...state,
       [key]: reducer(state[key as string], { type, payload } as Action)

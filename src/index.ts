@@ -8,5 +8,6 @@ export { createReducerSequence } from "./createReducerSequence";
 export { createReducerCrudHandlers } from "./createReducerCrudHandlers";
 export { createBatchHandler } from "./createBatchHandler";
 export { createHandlerFromReducer } from "./createHandlerFromReducer";
+export { createReducerAdapter } from "./createReducerAdapter";
 export { withInitialState } from "./withInitialState";
 export * from "./utility";

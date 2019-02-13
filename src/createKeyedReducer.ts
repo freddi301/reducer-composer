@@ -9,7 +9,7 @@ export function createKeyedReducer<
   reducer: Reducer<State, Action>
 ): Reducer<
   Record<string, State>,
-  Action & { payload: { [K in KeyAttribute]: string } }
+  Action & { payload: { [K in KeyAttribute]: string | number } }
 > {
   return (state, action) => {
     const {

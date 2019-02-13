@@ -7,7 +7,7 @@ export function createKeyedByReducer<
     payload: Record<string, any>;
   }
 >(
-  keySelector: (action: Action) => string,
+  keySelector: (action: Action) => string | number,
   reducer: Reducer<State, Action>
 ): Reducer<Record<string, State>, Action> {
   return (state, action) => {

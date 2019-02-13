@@ -11,7 +11,7 @@ export function createKeyedByReducer<
   reducer: Reducer<State, Action>
 ): Reducer<Record<string, State>, Action> {
   return (state, action) => {
-    const key = keySelector(action);
+    const key = keySelector(action); // TODO: guard against unknown actions
     return {
       ...state,
       [key]: reducer(state[key as string], action)

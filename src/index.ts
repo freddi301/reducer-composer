@@ -9,5 +9,6 @@ export { createReducerCrudHandlers } from "./createReducerCrudHandlers";
 export { createBatchHandler } from "./createBatchHandler";
 export { createHandlerFromReducer } from "./createHandlerFromReducer";
 export { createReducerAdapter } from "./createReducerAdapter";
+export { createDecoratedReducer } from "./createDecoratedReducer";
 export { withInitialState } from "./withInitialState";
 export * from "./utility";

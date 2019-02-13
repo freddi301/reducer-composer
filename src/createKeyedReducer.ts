@@ -16,6 +16,7 @@ export function createKeyedReducer<
       type,
       payload: { [keyAttribute]: key, ...payload }
     } = action;
+    // TODO: guard against unknown actions
     return {
       ...state,
       [key]: reducer(state[key as string], { type, payload } as Action)

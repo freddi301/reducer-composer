@@ -90,4 +90,13 @@ const car = createReducer<Record<string, Car>>()({
 
 [more usage](src/usage.ts)
 
+## Todo
+
+[ ] reduce DeepReadonly noise
+[ ] handle unknown actions on keyed and keyedBy reducer
+[ ] documentation
+[ ] dtslint tests
+[ ] jest tests
+[ ] performance tests
+
 ## License MIT

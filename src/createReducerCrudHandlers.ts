@@ -1,14 +1,14 @@
-import { DeepReadonly } from "./utility";
+import { DeepReadonly, description } from "./utility";
 import { createBatchHandler } from "./createBatchHandler";
 
 export function createReducerCrudHandlers<Entity, EntityPayload, KeyPayload>(
-  entitySelector: (payload: EntityPayload) => [string, Entity],
-  keySelector: (payload: KeyPayload) => string
+  entitySelector: (payload: EntityPayload) => [string | number, Entity],
+  keySelector: (payload: KeyPayload) => string | number
 ) {
   const withEntity = (
     f: (
       record: DeepReadonly<Record<string, Entity>>,
-      key: string,
+      key: string | number,
       entity: DeepReadonly<Entity>
     ) => DeepReadonly<Record<string, Entity>>
   ) => (
@@ -21,7 +21,7 @@ export function createReducerCrudHandlers<Entity, EntityPayload, KeyPayload>(
   const withKey = (
     f: (
       record: DeepReadonly<Record<string, Entity>>,
-      key: string
+      key: string | number
     ) => DeepReadonly<Record<string, Entity>>
   ) => (record: DeepReadonly<Record<string, Entity>>, payload: KeyPayload) =>
     f(record, keySelector(payload));
@@ -44,13 +44,17 @@ export function createReducerCrudHandlers<Entity, EntityPayload, KeyPayload>(
     }
     throw new Error();
   });
-  const upsert = withEntity((state, key, entity) => {
-    return { ...state, [key]: entity };
-  });
-  const discard = withKey((state, key) => {
-    const { [key]: removed, ...rest } = state;
-    return rest as DeepReadonly<Record<string, Entity>>;
-  });
+  const upsert = description<"add item if not exists, update otherwise">()(
+    withEntity((state, key, entity) => {
+      return { ...state, [key]: entity };
+    })
+  );
+  const discard = description<"remove item if exists, nothing otherwise">()(
+    withKey((state, key) => {
+      const { [key]: removed, ...rest } = state;
+      return rest as DeepReadonly<Record<string, Entity>>;
+    })
+  );
   return {
     create,
     update,

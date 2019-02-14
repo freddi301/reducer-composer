@@ -38,3 +38,13 @@ export function runActionsOnReducer<
 >(reducer: Reducer<State, Action>, state: State, actions: Action[]) {
   return actions.reduce(reducer, state);
 }
+
+export class Description<Desc> {
+  private constructor(private description: Desc) {}
+}
+export function description<Desc>() {
+  return <Item>(item: Item) => item as Description<Desc> & Item;
+}
+export type DescriptionOf<
+  Item extends Description<any>
+> = Item extends Description<infer Desc> ? Desc : unknown;

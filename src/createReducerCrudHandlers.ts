@@ -1,4 +1,4 @@
-import { DeepReadonly, description } from "./utility";
+import { description } from "./utility";
 import { createBatchHandler } from "./createBatchHandler";
 
 export function createReducerCrudHandlers<Entity, EntityPayload, KeyPayload>(
@@ -7,23 +7,20 @@ export function createReducerCrudHandlers<Entity, EntityPayload, KeyPayload>(
 ) {
   const withEntity = (
     f: (
-      record: DeepReadonly<Record<string, Entity>>,
+      record: Record<string, Entity>,
       key: string | number,
-      entity: DeepReadonly<Entity>
-    ) => DeepReadonly<Record<string, Entity>>
-  ) => (
-    record: DeepReadonly<Record<string, Entity>>,
-    payload: EntityPayload
-  ) => {
+      entity: Entity
+    ) => Record<string, Entity>
+  ) => (record: Record<string, Entity>, payload: EntityPayload) => {
     const [key, entity] = entitySelector(payload);
-    return f(record, key, (entity as unknown) as DeepReadonly<Entity>);
+    return f(record, key, entity);
   };
   const withKey = (
     f: (
-      record: DeepReadonly<Record<string, Entity>>,
+      record: Record<string, Entity>,
       key: string | number
-    ) => DeepReadonly<Record<string, Entity>>
-  ) => (record: DeepReadonly<Record<string, Entity>>, payload: KeyPayload) =>
+    ) => Record<string, Entity>
+  ) => (record: Record<string, Entity>, payload: KeyPayload) =>
     f(record, keySelector(payload));
   const create = withEntity((state, key, entity) => {
     if (Object.prototype.hasOwnProperty.call(state, key)) {
@@ -40,7 +37,7 @@ export function createReducerCrudHandlers<Entity, EntityPayload, KeyPayload>(
   const delet = withKey((state, key) => {
     if (Object.prototype.hasOwnProperty.call(state, key)) {
       const { [key]: removed, ...rest } = state;
-      return rest as DeepReadonly<Record<string, Entity>>;
+      return rest;
     }
     throw new Error();
   });
@@ -52,7 +49,7 @@ export function createReducerCrudHandlers<Entity, EntityPayload, KeyPayload>(
   const discard = description<"remove item if exists, nothing otherwise">()(
     withKey((state, key) => {
       const { [key]: removed, ...rest } = state;
-      return rest as DeepReadonly<Record<string, Entity>>;
+      return rest;
     })
   );
   return {

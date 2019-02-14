@@ -9,11 +9,9 @@ export type ActionOfReducer<R extends Reducer<any, any>> = Parameters<R>[1];
 export type StateOfReducer<R extends Reducer<any, any>> = ReturnType<R>;
 
 export interface DeepReadonlyArray<A> extends ReadonlyArray<DeepReadonly<A>> {}
-
 export type DeepReadonlyObject<A> = {
   readonly [K in keyof A]: DeepReadonly<A[K]>
 };
-
 export type DeepReadonly<A> = A extends Array<infer B>
   ? DeepReadonlyArray<B>
   : DeepReadonlyObject<A>;

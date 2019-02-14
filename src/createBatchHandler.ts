@@ -1,8 +1,6 @@
-import { DeepReadonly } from "./utility";
-
 export function createBatchHandler<State, Payload>(
-  handler: (state: DeepReadonly<State>, payload: Payload) => DeepReadonly<State>
+  handler: (state: State, payload: Payload) => State
 ) {
-  return (state: DeepReadonly<State>, payload: Array<Payload>) =>
+  return (state: State, payload: Array<Payload>) =>
     payload.reduce(handler, state);
 }

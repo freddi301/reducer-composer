@@ -11,4 +11,7 @@ export { createHandlerFromReducer } from "./createHandlerFromReducer";
 export { createReducerAdapter } from "./createReducerAdapter";
 export { createDecoratedReducer } from "./createDecoratedReducer";
 export { withInitialState } from "./withInitialState";
+export { createHandlers } from "./createHandlers";
+export { createKeyedHandlers } from "./createKeyedHandlers";
+export { createKeyedByHandlers } from "./createKeyedByHandlers";
 export * from "./utility";

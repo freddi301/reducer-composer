@@ -3,14 +3,16 @@ import {
   createCombinedReducer,
   StateOfReducer,
   ActionOfReducer,
-  createKeyedReducer,
   createReducerSequence,
   createReducerOnAction,
   Reducer,
   createBatchReducer,
   ignore,
   createReducerCrudHandlers,
-  createBatchHandler
+  createBatchHandler,
+  createHandlers,
+  createKeyedHandlers,
+  createKeyedReducer
 } from "reducer-composer";
 
 // createReducer
@@ -25,7 +27,7 @@ const userInitialState: User = {
   name: "",
   birth: new Date()
 };
-const userReducer = createReducer<User>()({
+const userHandlers = createHandlers<User>()({
   USER_CHANGE_NAME(user, { name }: { name: string }) {
     return { ...user, name };
   },
@@ -33,6 +35,7 @@ const userReducer = createReducer<User>()({
     return { ...user, birth };
   }
 });
+const userReducer = createReducer<User>()(userHandlers);
 userReducer(userInitialState, {
   type: "USER_CHANGE_BIRTH",
   payload: { birth: new Date() }
@@ -93,7 +96,9 @@ userClickBatchReducer(userClickInitialState, {
 
 // keyedReducer
 
-const usersReducer = createKeyedReducer("id", userReducer);
+const usersReducer = createReducer<Record<string, User>>()(
+  createKeyedHandlers("id", userHandlers)
+);
 usersReducer(
   {},
   { type: "USER_CHANGE_NAME", payload: { id: "42", name: "John Doe" } }

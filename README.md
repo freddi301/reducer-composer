@@ -92,7 +92,8 @@ const car = createReducer<Record<string, Car>>()({
 
 ## Todo
 
-[ ] handle unknown actions on keyed and keyedBy reducer
+[ ] remove deprecated methods
+[ ] change createReducer signature in favor of createHandlers
 [ ] documentation
 [ ] dtslint tests
 [ ] jest tests

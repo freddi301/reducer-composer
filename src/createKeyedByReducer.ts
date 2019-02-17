@@ -2,6 +2,7 @@ import { Reducer } from "./utility";
 
 /**
  * @todo filter unknown actions, cannot be called with unknown actions (cannot be used as is in createCombinedReducer)
+ * @deprecated use createKeyedByHandlers instead
  */
 export function createKeyedByReducer<
   State,

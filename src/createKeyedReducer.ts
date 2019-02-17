@@ -1,5 +1,6 @@
 import { Reducer } from "./utility";
 
+/** @deprecated use createKeyedHandlers instead */
 export function createKeyedReducer<
   KeyAttribute extends string,
   State,

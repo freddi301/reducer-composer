@@ -3,10 +3,11 @@ import {
   createCombinedReducer,
   createReducerSequence,
   createBatchReducer,
-  createKeyedReducer,
   createReducerCrudHandlers,
   createReducerOnAction,
   ActionOfReducer,
+  createHandlers,
+  createKeyedHandlers,
   ignore
 } from "reducer-composer";
 
@@ -15,8 +16,7 @@ interface User {
   name: string;
   birth: Date;
 }
-
-const user = createReducer<User>()({
+const userHandlers = createHandlers<User>()({
   USER_CHANGE_NAME(user, { name }: { name: string }) {
     return { ...user, name };
   },
@@ -24,6 +24,7 @@ const user = createReducer<User>()({
     return { ...user, birth };
   }
 });
+const user = createReducer<User>()(userHandlers);
 
 const click = createReducer<number>()({
   CLICK(clicks) {
@@ -41,7 +42,9 @@ const userClick = createCombinedReducer({
 
 const userClickBatchReducer = createBatchReducer("CLICKS", userClick);
 
-const usersReducer = createKeyedReducer("id", user);
+const usersReducer = createReducer<Record<string, User>>()(
+  createKeyedHandlers("id", userHandlers)
+);
 
 const companyUsers = createReducerSequence(
   usersReducer,
